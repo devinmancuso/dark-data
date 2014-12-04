@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+
+<title>Dark Data</title>
+
+
+<!--
+
+ (              (         )      )       (         (        )  
+ )\ )    (      )\ )   ( /(   ( /(       )\ )      )\ )  ( /(  
+(()/(    )\    (()/(   )\())  )\()) (   (()/( (   (()/(  )\()) 
+ /(_))((((_)(   /(_))|((_)\  ((_)\  )\   /(_)))\   /(_))((_)\  
+(_))_  )\ _ )\ (_))  |_ ((_)  _((_)((_) (_)) ((_) (_)) __ ((_) 
+ |   \ (_)_\(_)| _ \ | |/ /  | || || __|| _ \| __|/ __|\ \ / / 
+ | |) | / _ \  |   /   ' <   | __ || _| |   /| _| \__ \ \ V /  
+ |___/ /_/ \_\ |_|_\  _|\_\  |_||_||___||_|_\|___||___/  |_|   
+                                                               
+-->     
+
+<!-- Meta & Social -->
+
+
+<!-- Android mobile web mode -->
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- Apple mobile web mode -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<!-- Homescreen icons -->
+<link rel="apple-touch-icon" href="img/touch-icon-iphone.png">
+<link rel="apple-touch-icon" sizes="76x76" href="img/touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="120x120" href="img/touch-icon-iphone-retina.png">
+<link rel="apple-touch-icon" sizes="152x152" href="img/touch-icon-ipad-retina.png">
+<link rel="icon" sizes="192x192" href="img/touch-icon-highres.png">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
+                                                       
+<!-- Scripts -->
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/json2html.js"></script>
+<script type="text/javascript" src="js/jquery.json2html.js"></script>
+<script src="js/isotope.pkgd.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="filters" class="button-group">
+    <button class="button" data-filter="*">show all</button>
+    <button class="button" data-filter=".offense, .defense">In combat</button>
+    <button class="button" data-filter=".offense">Offense</button>
+    <button class="button" data-filter=".defense">Defense</button>
+    <button class="button" data-filter=".movement">Movement</button>
+    <button class="button" data-filter=".interrogation">Interrogation</button>
+    <button class="button" data-filter=".intelligence">Intelligence</button>
+  </div>
+
+  <div id="container"></div>
+
+    <script type="text/javascript">
+
+    // Creating the HTML structure for the JSON to adhere to
+    var transform = 
+      {"tag":"div","class":"item ${class.0} ${class.1} ${class.2}","children":[
+        {"tag":"div","class":"item-content","children":[
+          {"tag":"h3","class":"name","html":"${name}"},
+          {"tag":"p","class":"description","html":"${description}"},
+          {"tag":"p","class":"result","html":"${result}"},
+          {"tag":"p","class":"symbol","html":"${symbol}"}
+        ]}
+      ]}
+
+      //Call in the JSON file
+      var card_data;
+
+      $.ajax({
+        async: true,
+        url: "https://dl.dropboxusercontent.com/u/6976779/dark-data.json",
+        jsonpCallback: "myCallback",
+        type: "GET",
+        dataType: "jsonp",
+        contentType: "application/json",
+        success: function( json ) {
+              card_data = json;
+              //checkJsonFile();
+              buildHTML();
+
+              var $container = $('#container');
+              // init
+              $container.isotope({
+                // options
+                itemSelector: '.item',
+                masonry: {
+                  columnWidth: 5
+                },
+                getSortData: {
+                  name: '.name', // text from querySelector
+                }
+              });
+
+              // filter items on button click
+              $('#filters').on( 'click', 'button', function() {
+                var filterValue = $(this).attr('data-filter');
+                $container.isotope({ filter: filterValue, sortBy: 'name' });
+              });
+
+              $container.on( 'click', '.item-content', function() {
+                  $( this ).parent('.item').toggleClass('is-expanded');
+                  $( this ).children('.description').toggleClass('is-expanded');
+                  $container.isotope('layout');
+                });
+
+
+              }
+            });
+
+      /* Check Funtion */
+      /*
+      function checkJsonFile() {
+        console.log('checkJsonFile Output');
+        console.log(card_data);
+      }  
+      */
+
+      function buildHTML() {
+        for(var i = 0; i < card_data.length; i++) {
+          var obj = card_data[i];
+
+          //console.log(obj);
+      
+          //console.log(obj.players);
+
+          // Checking which players are lodged against which skills
+          var found = $.inArray('devin', obj.players) > -1;
+
+          // True or false printed to the console
+          //console.log(found)
+
+          if (found == true) {
+            console.log('True, this should only print once per obj');
+            $('#container').json2html(obj, transform);
+          } else {
+            // If my name is associated with a given obj
+            console.log('The player Devin is not assigned to this object');
+          }
+        };        
+      }  
+    </script>
+
+</body>
+
+</html>

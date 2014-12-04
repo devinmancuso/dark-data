@@ -1,0 +1,182 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background: rgb(7,7,7);
+}
+
+/* ---- button ---- */
+
+.button {
+  display: inline-block;
+  padding: 0.5em 1.0em;
+  background: #EEE;
+  border: none;
+  border-radius: 7px;
+  background-image: linear-gradient( to bottom, hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.2) );
+  color: #999999;
+  font-family: sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:active,
+.button.is-checked {
+  background-color: #28F;
+}
+
+.button.is-checked {
+  color: white;
+  text-shadow: 0 -1px hsla(0, 0%, 0%, 0.8);
+}
+
+.button:active {
+  box-shadow: inset 0 1px 10px hsla(0, 0%, 0%, 0.8);
+}
+
+/* ---- button-group ---- */
+
+.button-group {
+  margin-bottom: 15px;
+  margin-left: 5px;
+}
+
+.button-group:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.button-group .button {
+  float: left;
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 1px;
+  background: url('../img/button-bg.png');
+  min-width: 130px;
+  min-height: 47px;
+}
+
+.button-group .button:hover {
+  color: #D3D3D3;
+  background: url('../img/button-bg-hover.png');
+  min-width: 130px;
+  min-height: 47px;
+}
+.button-group .button:active, .button.is-checked {
+  color: #D3D3D3;
+  background: url('../img/button-bg-hover.png');
+  min-width: 130px;
+  min-height: 47px;
+}
+
+.button-group .button:first-child { border-radius: 0.5em 0 0 0.5em; }
+.button-group .button:last-child { border-radius: 0 0.5em 0.5em 0; }
+
+/* ---- isotope ---- */
+
+.container {
+  border: 1px solid #333;
+}
+
+/* clear fix */
+.container:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- .item ---- */
+
+.item {
+  position: relative;
+  float: left;
+  margin: 5px;
+  background: #F3F3F3;
+  color: #262524;
+}
+
+.item > * {
+  margin: 0;
+  padding: 0;
+}
+
+.item .name {
+  margin-left: 30px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 18px;
+  font-weight: normal;
+  margin-top: 0px;
+  padding-top: 40px;
+}
+
+.item .symbol {
+  position: absolute;
+  right: 25px;
+  top: -7px;
+  font-size: 38px;
+  font-weight: bold;
+  color: rgb(194, 192, 192);
+}
+
+.item .result {
+  margin-left: 30px;
+  margin-right: 30px;
+  font-size: 13px;
+  padding-top: 15px;
+}
+
+.description {
+  display:none;
+}
+.description.is-expanded {
+  margin-left: 30px;
+  display:block;
+  margin-right: 10px;
+  font-size: 14px;
+  font-style: italic;
+}
+.item.is-expanded .symbol {
+  color: white;
+}
+
+/* item is invisible, but used for layout */
+.item,
+.item-content {
+  width: 32%;
+  background: url('../img/card-bg.jpg') top center no-repeat;
+  color: rgb(185, 185, 185);
+}
+
+/* item-content is visible, and transitions size */
+.item-content {
+  width: 100%;
+  overflow: auto;
+}
+
+.item:hover .item-content {
+  cursor: pointer;
+}
+
+/* both item and item content change size */
+.item.is-expanded,
+.item.is-expanded .item-content {
+  overflow: auto;
+}
+
+.item.is-expanded {
+  z-index: 2;
+}
+
+.item.is-expanded .item-content {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.item-content {
+  transition: width 0.4s, height 0.4s;
+}
